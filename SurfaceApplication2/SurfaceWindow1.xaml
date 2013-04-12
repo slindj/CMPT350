@@ -1,0 +1,62 @@
+﻿<s:SurfaceWindow x:Class="SurfaceApplication2.SurfaceWindow1"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:s="http://schemas.microsoft.com/surface/2008"
+    Title="SurfaceApplication2"
+    >
+    <s:SurfaceWindow.Resources>
+        <DataTemplate x:Key="PosterOnly">
+            <Image Source="{Binding ImageSource}"/>
+        </DataTemplate>
+        <DataTemplate x:Key="MovieTemplate" x:Name="MovieT" >
+            <DockPanel LastChildFill="True" >
+ 
+                
+                <Label  Grid.Row="1" Foreground="Black" Content="{Binding Price}" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
+                <Image x:Name="MoviePoster"  HorizontalAlignment="Center" Source="{Binding ImageSource}" Stretch="Uniform"  Margin="10"/>        
+            </DockPanel>
+            
+        </DataTemplate>
+        <Style x:Key="CursorStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="ContentTemplate" Value="{StaticResource MovieTemplate}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="{x:Type ContentControl}">
+                        <ContentPresenter
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}">
+                        </ContentPresenter>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </s:SurfaceWindow.Resources>
+  <Grid>
+        <s:ScatterView x:Name="scatter" ItemTemplate="{StaticResource MovieTemplate}" 
+                       ItemsSource="{Binding ScatterItems}" Background="White" 
+                       AllowDrop="True"  PreviewTouchDown="scatter_PreviewTouchDown"
+                       s:SurfaceDragDrop.DragCanceled="scatter_DragCanceled"
+                       s:SurfaceDragDrop.DragCompleted="scatter_DragCompleted"
+                       s:SurfaceDragDrop.Drop="scatter_Drop">
+            <s:ScatterView.ItemContainerStyle>
+                <Style TargetType="{x:Type s:ScatterViewItem}">
+                    <Setter Property="Width" Value="200"/>
+                    <Setter Property="Height" Value="320"/>
+                    <Setter Property="HorizontalAlignment" Value="Left"/>
+                    <Setter Property="CanScale" Value="True"/>
+                </Style>
+            </s:ScatterView.ItemContainerStyle>
+        </s:ScatterView>
+        <s:ScatterView x:Name="scatter2">
+            <s:ScatterViewItem Height="400">
+                <DockPanel LastChildFill="True">
+                    <Label  Height="15" Content="Movies to Buy" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
+                    <Label Height="15" x:Name="totalPriceLabel"  Content="0" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
+                    <s:LibraryStack ItemsSource="{Binding Path=LibraryItems}" ItemTemplate="{StaticResource PosterOnly}" 
+                                    AllowDrop="True" s:SurfaceDragDrop.Drop="LibraryStack_Drop"/>
+                </DockPanel>
+                
+            </s:ScatterViewItem>
+        </s:ScatterView>
+    </Grid>
+</s:SurfaceWindow>
