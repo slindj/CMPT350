@@ -28,7 +28,7 @@ namespace SurfaceApplication2
         /// Default constructor.
         /// </summary>
         /// 
-   
+
         private ObservableCollection<Movie> scatterItems = new ObservableCollection<Movie>();
         private Movie[] movies = new Movie[3];
         private ObservableCollection<Movie> libraryItems = new ObservableCollection<Movie>();
@@ -136,14 +136,7 @@ namespace SurfaceApplication2
             //TODO: disable audio, animations here
         }
 
-        private void LibraryStack_Drop(object sender, SurfaceDragDropEventArgs e)
-        {
-            if(!LibraryItems.Contains(e.Cursor.Data))
-            {
-                LibraryItems.Add((Movie)e.Cursor.Data);
-            }
-
-        }
+       
 
         private void scatter_Drop(object sender, SurfaceDragDropEventArgs e)
         {
@@ -237,9 +230,45 @@ namespace SurfaceApplication2
 
         private void scatter_DragCompleted(object sender, SurfaceDragCompletedEventArgs e)
         {
-            Movie data = e.Cursor.Data as Movie;
-            price += data.Price;
-            totalPriceLabel.Content = Price;
+            //if (e.Cursor.CurrentTarget != scatter && e.Cursor.Effects == DragDropEffects.Move)
+           // {
+            //    Movie data = e.Cursor.Data as Movie;
+            //    price += data.Price;
+            //    totalPriceLabel.Content = Price;
+            //}
         }
+
+        private void LibraryStack_DragEnter(object sender, SurfaceDragDropEventArgs e)
+        {
+            Movie data = e.Cursor.Data as Movie;
+            if (!libraryItems.Contains(data))
+            {
+                libraryItems.Add(data);
+                price += data.Price;
+                totalPriceLabel.Content = Price;
+            }
+        }
+
+
+        private void LibraryStack_DragLeave(object sender, SurfaceDragDropEventArgs e)
+        {
+           Movie data = e.Cursor.Data as Movie;
+            if (libraryItems.Contains(data))
+            {
+                libraryItems.Remove(data);
+                if (libraryItems.Count == 0)
+                {
+                    price = 0;
+                    totalPriceLabel.Content = "$0.00";
+                }
+                else
+                {
+                    price -= data.Price;
+                    totalPriceLabel.Content = Price;
+                }
+            }
+        }
+
+        
     }
 }

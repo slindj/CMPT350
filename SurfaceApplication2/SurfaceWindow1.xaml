@@ -51,9 +51,12 @@
             <s:ScatterViewItem Height="400">
                 <DockPanel LastChildFill="True">
                     <Label  Height="15" Content="Movies to Buy" HorizontalAlignment="Center" DockPanel.Dock="Top"/>
-                    <Label Height="15" x:Name="totalPriceLabel"  Content="0" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
-                    <s:LibraryStack ItemsSource="{Binding Path=LibraryItems}" ItemTemplate="{StaticResource PosterOnly}" 
-                                    AllowDrop="True" s:SurfaceDragDrop.Drop="LibraryStack_Drop"/>
+                    <Label Height="15" x:Name="totalPriceLabel"  Content="$0.00" HorizontalAlignment="Center" DockPanel.Dock="Bottom"/>
+                    <s:LibraryStack x:Name="lstack"  ItemTemplate="{StaticResource PosterOnly}" 
+                                    AllowDrop="True" 
+                                    s:SurfaceDragDrop.DragEnter="LibraryStack_DragEnter"
+                                    s:SurfaceDragDrop.DragLeave="LibraryStack_DragLeave"/>
+                                    
                 </DockPanel>
                 
             </s:ScatterViewItem>
